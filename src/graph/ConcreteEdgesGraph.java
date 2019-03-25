@@ -41,7 +41,7 @@ public class ConcreteEdgesGraph implements Graph<String> {
 
 	@Override
 	public int set(String source, String target, int weight) {
-		if(weight < 0) {
+		if (weight < 0) {
 			return 0;
 		}
 

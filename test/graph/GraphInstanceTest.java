@@ -70,7 +70,6 @@ public abstract class GraphInstanceTest {
 	}
 
 	// TODO other tests for instance methods of Graph
-	
 
 	/** Covers: Vertex not in graph */
 	@Test
@@ -85,7 +84,7 @@ public abstract class GraphInstanceTest {
 		assertTrue("Expected vertex to be added", vertexAdded);
 		assertEquals("Expected vertices to increase by one", InitialNumOfVertices + 1, CurrentNumOfVertices);
 	}
-	
+
 	/** Covers: Vertex in graph */
 	@Test
 	public void testVertexAddExists() {
@@ -98,7 +97,7 @@ public abstract class GraphInstanceTest {
 		boolean vertex2Added = graph.add(vertex2);
 
 		int InitialNumOfVertices = graph.vertices().size();
-		
+
 		boolean vertex1AddedAgain = graph.add(vertex1);
 		int CurrentNumOfVertices = graph.vertices().size();
 
@@ -107,7 +106,7 @@ public abstract class GraphInstanceTest {
 		assertFalse("Expected vertex1 not to be added", vertex1AddedAgain);
 		assertEquals("Expected same number of vertices", InitialNumOfVertices, CurrentNumOfVertices);
 	}
-	
+
 	/** Covers: Vertex not in graph */
 	@Test
 	public void testVertexRemoveNotExists() {
@@ -120,37 +119,33 @@ public abstract class GraphInstanceTest {
 		assertFalse("Expected no effect on graph after remove", vertexRemoved);
 		assertEquals("Expected same number of vertices", InitialNumVertices, CurrentNumVertices);
 	}
-	
+
 	/** Covers: Vertex in graph */
 	@Test
 	public void testVertexRemoveExists() {
 		Graph<String> graph = emptyInstance();
-        
-        String vertex1 = "vertex1";
-        String vertex2 = "vertex2";
-        
-        graph.add(vertex1);
-        graph.add(vertex2);
-        
-        int InitialNumOfVertices = graph.vertices().size();
-        
-        boolean vertex2Removed = graph.remove(vertex2);
-        
-        int CurrentNumOfVertices = graph.vertices().size();
-        
-        assertTrue("Expected vertex removed", vertex2Removed);
-        assertEquals("Expected number of vertices reduced by 1", InitialNumOfVertices - 1, CurrentNumOfVertices);
-        assertTrue("Expected correct vertex removed", graph.vertices().contains(vertex1));
-        assertFalse("Expected correct vertex removed", graph.vertices().contains(vertex2));
+
+		String vertex1 = "vertex1";
+		String vertex2 = "vertex2";
+
+		graph.add(vertex1);
+		graph.add(vertex2);
+
+		int InitialNumOfVertices = graph.vertices().size();
+
+		boolean vertex2Removed = graph.remove(vertex2);
+
+		int CurrentNumOfVertices = graph.vertices().size();
+
+		assertTrue("Expected vertex removed", vertex2Removed);
+		assertEquals("Expected number of vertices reduced by 1", InitialNumOfVertices - 1, CurrentNumOfVertices);
+		assertTrue("Expected correct vertex removed", graph.vertices().contains(vertex1));
+		assertFalse("Expected correct vertex removed", graph.vertices().contains(vertex2));
 	}
-	
-	
+
 	/**
-	 *	Covers:
-	 *		1. Source doesn't exist
-	 *		2. Target doesn't exist
-	 *		3. Edge doesn't exist
-	 *		4. Weight positive
+	 * Covers: 1. Source doesn't exist 2. Target doesn't exist 3. Edge doesn't exist
+	 * 4. Weight positive
 	 */
 	@Test
 	public void testSetEdgeSourceNotExistsTargetNotExists() {
@@ -174,14 +169,10 @@ public abstract class GraphInstanceTest {
 		assertEquals("Expected source to have correct weight", (Integer) weight, sources.get(source));
 		assertEquals("Expected target to have correct weight", (Integer) weight, targets.get(target));
 	}
-	
-	
+
 	/**
-	 *	Covers:
-	 *		1. Source doesn't exist
-	 *		2. Target exists
-	 *		3. Edge doesn't exist
-	 *		4. Weight positive
+	 * Covers: 1. Source doesn't exist 2. Target exists 3. Edge doesn't exist 4.
+	 * Weight positive
 	 */
 	@Test
 	public void testSetEdgeSourceNotExists() {
@@ -206,14 +197,10 @@ public abstract class GraphInstanceTest {
 		assertEquals("Expected source to have correct weight", (Integer) weight, sources.get(source));
 		assertEquals("Expected target to have correct weight", (Integer) weight, targets.get(target));
 	}
-	
-	
+
 	/**
-	 *	Covers:
-	 *		1. Target doesn't exist
-	 *		2. Source exists
-	 *		3. Edge doesn't exist
-	 *		4. Weight positive
+	 * Covers: 1. Target doesn't exist 2. Source exists 3. Edge doesn't exist 4.
+	 * Weight positive
 	 */
 	@Test
 	public void testSetEdgeTargetNotExists() {
@@ -238,13 +225,9 @@ public abstract class GraphInstanceTest {
 		assertEquals("Expected source to have correct weight", (Integer) weight, sources.get(source));
 		assertEquals("Expected target to have correct weight", (Integer) weight, targets.get(target));
 	}
-	
+
 	/**
-	 *	Covers:
-	 *		1. Source exists
-	 *		2. Target exists
-	 *		3. Edge exists
-	 *		4. Weight positive
+	 * Covers: 1. Source exists 2. Target exists 3. Edge exists 4. Weight positive
 	 */
 	@Test
 	public void testSetEdgeExistsWeightNonZero() {
@@ -255,7 +238,7 @@ public abstract class GraphInstanceTest {
 		int weight = 1;
 		int newWeight = 2;
 		graph.set(v1, v2, weight);
-		
+
 		int InitialNumVertices = graph.vertices().size();
 		int previousWeight = graph.set(v1, v2, newWeight);
 		int CurrentNumVertices = graph.vertices().size();
@@ -269,13 +252,9 @@ public abstract class GraphInstanceTest {
 		assertEquals("Expected target to have new weight", (Integer) newWeight, targetsV1.get(v2));
 		assertEquals("Expected source to have new weight", (Integer) newWeight, sourcesV2.get(v1));
 	}
-	
+
 	/**
-	 *	Covers:
-	 *		1. Source exists
-	 *		2. Target exists
-	 *		3. Edge exists
-	 *		4. Weight Zero
+	 * Covers: 1. Source exists 2. Target exists 3. Edge exists 4. Weight Zero
 	 */
 	@Test
 	public void testSetEdgeExistsWeightZero() {
@@ -296,8 +275,7 @@ public abstract class GraphInstanceTest {
 		assertFalse("Expected edge removed from graph", targets.containsKey(target));
 
 	}
-	
-	
+
 	/** Graph.vertices(): covers empty graph */
 	@Test
 	public void testGetVerticesEmptyGraph() {
@@ -305,45 +283,45 @@ public abstract class GraphInstanceTest {
 
 		assertTrue("Expected empty set", graph.vertices().isEmpty());
 	}
-	
+
 	/** Graph.vertices(): covers non-empty graph */
 	@Test
 	public void testGetVerticesNonEmptyGraph() {
 		Graph<String> graph = emptyInstance();
 		Set<String> vertices = new HashSet<String>();
-		
+
 		String v1 = "vertex1";
 		String v2 = "vertex2";
-		
+
 		graph.add(v1);
 		graph.add(v2);
 		vertices.add(v1);
-		vertices.add(v2);		
+		vertices.add(v2);
 
 		assertTrue("Expected v1 and v2 in set", graph.vertices().containsAll(vertices));
 	}
-	
+
 	/** Graph.sources(): covers vertex not in graph */
 	@Test
 	public void testGetSourcesVertexNotExists() {
 		Graph<String> graph = emptyInstance();
 		assertTrue("Expected empty set", graph.sources("vertex2").isEmpty());
 	}
-	
-	/** Graph.sources(): covers vertex in graph, sources zero*/
+
+	/** Graph.sources(): covers vertex in graph, sources zero */
 	@Test
 	public void testGetSourcesVertexExistsSourcesZero() {
 		Graph<String> graph = emptyInstance();
 		graph.add("vertex1");
-		
+
 		assertTrue("Expected empty set", graph.sources("vertex1").isEmpty());
 	}
-	
+
 	/** Graph.sources(): covers vertex in graph, source > 0 */
 	@Test
 	public void testGetSourcesVertexExistsSourcesPositive() {
 		Graph<String> graph = emptyInstance();
-		
+
 		String v1 = "vertex1";
 		String v2 = "vertex2";
 		String v3 = "vertex3";
@@ -351,15 +329,15 @@ public abstract class GraphInstanceTest {
 		graph.set(v1, v2, weight);
 		graph.set(v1, v3, weight);
 		graph.set(v2, v3, weight);
-		
+
 		Map<String, Integer> sourcesV2 = graph.sources(v2);
 		Map<String, Integer> sourcesV3 = graph.sources(v3);
-		
+
 		assertTrue("Expected v2 to have source v1", sourcesV2.containsKey(v1));
 		assertTrue("Expected v3 to have source v1", sourcesV3.containsKey(v1));
 		assertTrue("Expected v3 to have source v2", sourcesV3.containsKey(v2));
 	}
-	
+
 	/** Graph.targets(): covers vertex not in graph */
 	@Test
 	public void testGetTargetsVertexNotExists() {
@@ -367,21 +345,21 @@ public abstract class GraphInstanceTest {
 
 		assertTrue("Expected empty set", graph.targets("vertex2").isEmpty());
 	}
-	
+
 	/** Graph.targets(): covers vertex in graph, targets 0 */
 	@Test
 	public void testGetTargetsVertexExistsTargetsZero() {
 		Graph<String> graph = emptyInstance();
 		graph.add("vertex1");
-		
+
 		assertTrue("Expected empty set", graph.targets("vertex1").isEmpty());
 	}
-	
+
 	/** Graph.targets(): covers vertex in graph, targets > 0 */
 	@Test
 	public void testGetTargetsExistsTargetsPositive() {
 		Graph<String> graph = emptyInstance();
-		
+
 		String v1 = "vertex1";
 		String v2 = "vertex2";
 		String v3 = "vertex3";
@@ -389,10 +367,10 @@ public abstract class GraphInstanceTest {
 		graph.set(v1, v2, weight);
 		graph.set(v1, v3, weight);
 		graph.set(v2, v3, weight);
-		
+
 		Map<String, Integer> targets = graph.targets(v1);
 		Map<String, Integer> targetsV2 = graph.targets(v2);
-		
+
 		assertTrue("Expected v1 to have target v2", targets.containsKey(v2));
 		assertTrue("Expected v1 to have target v3", targets.containsKey(v3));
 		assertTrue("Expected v2 to have target v3", targetsV2.containsKey(v3));
