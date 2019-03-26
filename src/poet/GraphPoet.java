@@ -3,10 +3,23 @@
  */
 package poet;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-import graph.Graph;
+import graph.ConcreteEdgesGraph;
 
 /**
  * A graph-based poetry generator.
@@ -52,14 +65,22 @@ import graph.Graph;
  */
 public class GraphPoet {
     
-    private final Graph<String> graph = Graph.empty();
+    private final ConcreteEdgesGraph graph = new ConcreteEdgesGraph();
     
-    // Abstraction function:
-    //   TODO
-    // Representation invariant:
-    //   TODO
-    // Safety from rep exposure:
-    //   TODO
+    /*	Abstraction function:
+     * 		A function that takes an input and converts it into
+     * 		poetry using a corpus of text provided
+     */
+    
+    /*	Representation invariant:
+     * 		Graph that has immutable types as Vertices and is non-null
+     */   	
+    
+    /*	Safety from rep exposure:
+     * 		- Graph is private and final
+     * 		- No instance of Graph is exposed to the client for mutation
+     * 		- Vertices of Graph are immutable
+     */
     
     /**
      * Create a new poet with the graph from corpus (as described above).
@@ -68,10 +89,43 @@ public class GraphPoet {
      * @throws IOException if the corpus file cannot be found or read
      */
     public GraphPoet(File corpus) throws IOException {
-        throw new RuntimeException("not implemented");
+    	List<String> listOfWords = getWordsFromTextFile(corpus);
+		for (int i = 0; i < listOfWords.size() - 1; i++) {
+			String source = listOfWords.get(i);
+			String target = listOfWords.get(i + 1);
+			int prev = graph.set(source, target, 1);
+            graph.set(source, target, prev + 1);
+		}
     }
     
+    /**
+     * 	Convert file text to a list of words
+     *	
+     *	@author Lalee
+     * 	@param	input File to read
+     * 	@return list of words extracted from file
+     * @throws IOException 
+     */
+    
+	public List<String> getWordsFromTextFile(File corpus) throws IOException {
+		checkRep();
+		URI uri = corpus.toURI();
+		List<String> words = new ArrayList<String>();
+		List<String> lines = Files.readAllLines(Paths.get(uri));
+		String textFromFile = String.join("", lines);
+		Pattern p = Pattern.compile("[\\w']+");
+		Matcher m = p.matcher(textFromFile);
+
+		while (m.find()) {
+			words.add(textFromFile.substring(m.start(), m.end()).toLowerCase());
+		}
+		return words;
+	}
+    
     // TODO checkRep
+	private void checkRep() {
+		assert graph != null;
+	}
     
     /**
      * Generate a poem.
@@ -79,10 +133,41 @@ public class GraphPoet {
      * @param input string from which to create the poem
      * @return poem (as described above)
      */
-    public String poem(String input) {
-        throw new RuntimeException("not implemented");
-    }
     
     // TODO toString()
+    public String poem(String input) {
+    	System.out.println(input);
+    	String[] inputWords = input.split("\\s");
+        StringBuilder poem = new StringBuilder(input);
+        int fromIndex = 0;
+        
+        for (int i = 0; i < inputWords.length; i++) {
+            if (i + 1 >= inputWords.length) {
+                break;
+            }
+            Map<String, Integer> word1Targets = 
+                    graph.targets(inputWords[i].toLowerCase());
+            Map<String, Integer> word2Sources =
+                    graph.sources(inputWords[i+1].toLowerCase());
+            Set<String> probableBridges = word1Targets.keySet();
+            
+            List<String> allBridges = probableBridges.stream()
+                    .filter(possibleBridge -> word2Sources.containsKey(possibleBridge))
+                    .collect(Collectors.toList());
+            
+            if (!allBridges.isEmpty()) {
+                Random rand = new Random();
+                int  n = rand.nextInt(allBridges.size());
+                String bridge = allBridges.get(n);
+                // get the index of word 2 from the poem
+                int insertAt = poem.indexOf(inputWords[i+1], fromIndex);
+                // insert the bridge word before that word
+                poem.insert(insertAt, bridge + " ");
+            }
+        }
+        checkRep();
+        System.out.println(poem.toString());
+        return poem.toString();
+    }
     
 }
